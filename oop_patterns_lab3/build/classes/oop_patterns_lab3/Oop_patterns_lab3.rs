@@ -1,0 +1,5 @@
+oop_patterns_lab3.Abonent
+oop_patterns_lab3.Oop_patterns_lab3
+oop_patterns_lab3.Tariff
+oop_patterns_lab3.IAbonent
+oop_patterns_lab3.Operator
