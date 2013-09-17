@@ -31,7 +31,7 @@ public class PiMonteCarlo {
         for (Future<Long> future : results) {
             insidePoints += future.get();
         }
-        double pi = (insidePoints / (double)POINT_NUMBER) * 4;
+        double pi = (insidePoints / (double) POINT_NUMBER) * 4;
         double timing = System.currentTimeMillis() - startTime;
         System.out.println("PI is " + pi);
         System.out.println("THREADS " + threadNumber);
