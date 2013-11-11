@@ -1,6 +1,11 @@
 (ns lab-2.core
   (:gen-class))
 
+(import '(java.io DataInputStream)
+        '(java.io FileInputStream)
+        '(java.io DataOutputStream)
+        '(java.io FileOutputStream))
+
 ; Using this thread as example
 ; http://stackoverflow.com/questions/2760017/producer-consumer-with-qualifications
 
@@ -47,4 +52,42 @@
   (dorun (repeatedly 2 consumer))
   (halt)
   output)
+
+(defn- readBin [filename]
+  (let
+    [filestream (FileInputStream. filename)
+     stream (DataInputStream. filestream)
+
+     usernum (. stream readInt)
+     relations (. stream readInt)
+     votings (. stream readInt)
+     users (repeatedly relations #(list (. stream readInt)
+                                        (. stream readInt)))
+     votes (repeatedly votings #(list (. stream readInt)
+                                      (. stream readInt)))]
+    (flatten
+      (list
+        usernum
+        relations
+        votings
+        users
+        votes))))
+
+(defn- writeBin [bytes filename]
+  (let [filestream (FileOutputStream. filename)
+        stream (DataOutputStream. filestream)]
+    (dorun (map #(. stream writeInt %) bytes))))
+
+(defn- genTask [usernum relations votings maxvotes]
+  (flatten
+    (list
+      usernum
+      relations
+      votings
+      (repeatedly relations #(list
+                             (rand-int usernum)
+                             (rand-int usernum)))
+      (repeatedly votings #(list
+                             (rand-int usernum)
+                             (rand-int maxvotes))))))
 
