@@ -7,7 +7,7 @@
 
 (defn- third [coll]
   (nth coll 2))
- 
+
 (defn- readBin [filename]
   (let
     [filestream (FileInputStream. filename)
@@ -36,10 +36,27 @@
 (defn- processBinData [bindata]
   (let [usernum (first bindata)
         relationnum (second bindata)
-        votesnum (third bindata)]
-    {:usernum usernum
-     :relationnum relationnum
-     :votesnum votesnum
-     :users (repeat usernum nil)
-     :votes (repeat votesnum nil)}))
+        votesnum (third bindata)
+        bindata (drop 3 bindata)
+        data {:usernum usernum
+              :relationnum relationnum
+              :votesnum votesnum
+              :users (vec (repeat usernum nil))
+              :votes (vec (repeat votesnum nil))}]
+    (map
+      (fn [pair]
+        (let [from (first pair)
+              to (second pair)]
+          (def data (assoc data :users (assoc (data :users) from to)))
+          (def data (assoc data :users (assoc (data :users) to from)))))
+      (makepairs bindata))
+    data))
+
+(defn- maketuplesf [n]
+  (fn [lst] (map (partial take n)
+       (take-while (complement empty?)
+                   (iterate (partial drop n)
+                            lst)))))
+
+(def makepairs (maketuplesf 2))
 
