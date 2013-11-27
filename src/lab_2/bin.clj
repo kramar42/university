@@ -8,6 +8,14 @@
 (defn- third [coll]
   (nth coll 2))
 
+(defn- maketuplesf [n]
+  (fn [lst] (map (partial take n)
+       (take-while (complement empty?)
+                   (iterate (partial drop n)
+                            lst)))))
+
+(def makepairs (maketuplesf 2))
+
 (defn- readBin [filename]
   (let
     [filestream (FileInputStream. filename)
@@ -43,20 +51,14 @@
               :votesnum votesnum
               :users (vec (repeat usernum nil))
               :votes (vec (repeat votesnum nil))}]
+    ((println (makepairs bindata))
     (map
       (fn [pair]
         (let [from (first pair)
               to (second pair)]
-          (def data (assoc data :users (assoc (data :users) from to)))
-          (def data (assoc data :users (assoc (data :users) to from)))))
+          (def data (assoc data :votes
+                      (assoc
+                        (assoc (data :votes) from to)
+                                             to from)))))
       (makepairs bindata))
-    data))
-
-(defn- maketuplesf [n]
-  (fn [lst] (map (partial take n)
-       (take-while (complement empty?)
-                   (iterate (partial drop n)
-                            lst)))))
-
-(def makepairs (maketuplesf 2))
-
+    data)))
