@@ -1,0 +1,7 @@
+oop_patterns_lab2.PrintVacancy
+oop_patterns_lab2.Vacancy
+oop_patterns_lab2.AdvancedPrintVacancy
+oop_patterns_lab2.Oop_patterns_lab2
+oop_patterns_lab2.VacancyBank
+oop_patterns_lab2.SimplePrintVacancy
+oop_patterns_lab2.aVacancy

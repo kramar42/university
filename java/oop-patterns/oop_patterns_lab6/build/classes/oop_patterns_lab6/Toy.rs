@@ -1,0 +1,11 @@
+oop_patterns_lab6.Toy
+oop_patterns_lab6.InsideToy
+oop_patterns_lab6.Snegurochka
+oop_patterns_lab6.PackForBoy
+oop_patterns_lab6.PackToy
+oop_patterns_lab6.DedMoroz
+oop_patterns_lab6.InsideForGirls
+oop_patterns_lab6.ToyCreator
+oop_patterns_lab6.PackForGirl
+oop_patterns_lab6.ToyFactory
+oop_patterns_lab6.InsideForBoys

@@ -1,0 +1,7 @@
+oop_patterns_lab1.Decorator
+oop_patterns_lab1.Stomatologist
+oop_patterns_lab1.CompositeDoctor
+oop_patterns_lab1.Doctor
+oop_patterns_lab1.Surgeon
+oop_patterns_lab1.Podiatrist
+oop_patterns_lab1.Oop_patterns_lab1
