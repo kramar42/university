@@ -20,23 +20,17 @@ class ProcessModel:
                 self.addPriority(*map(int, line.split(' ')))
 
         def calculateTime(self):
-            sumTaskNumber = 0
-            sumWholeTaskIntensity = 0
-            sumWholeTaskFactAverageProcessingTime = 0
-
-            p = [0] * self.priorityNumber
-            Pi = [0] * self.priorityNumber
-            w = [0] * self.priorityNumber
-
-            for i in xrange(self.priorityNumber):
-                sumTaskNumber += self.taskNumber[i]
-                sumWholeTaskIntensity += self.taskNumber[i] * self.averageIntensity[i]
-                sumWholeTaskFactAverageProcessingTime += self.taskNumber[i] * self.factAverageProcessingTime[i]
-                p[i] = self.averageIntensity[i] * self.factAverageProcessingTime[i]
+            sumTaskNumber = sum(self.taskNumber[i] for i in xrange(self.priorityNumber))
+            sumWholeTaskIntensity = sum(self.taskNumber[i] * self.averageIntensity[i] for i in xrange(self.priorityNumber))
+            sumWholeTaskFactAverageProcessingTime = sum(self.taskNumber[i] * self.factAverageProcessingTime[i] for i in xrange(self.priorityNumber))
 
             sumIntensity = sumWholeTaskIntensity / sumTaskNumber
             sum_v = sumWholeTaskFactAverageProcessingTime / sumTaskNumber
             sum_p = sumIntensity * sum_v
+
+            p = [self.averageIntensity[i] * self.factAverageProcessingTime[i] for i in xrange(self.priorityNumber)]
+            Pi = [0] * self.priorityNumber
+            w = [0] * self.priorityNumber
 
             tmpSum = 1
             for i in xrange(self.priorityNumber):
@@ -50,30 +44,27 @@ class ProcessModel:
             for i in xrange(self.priorityNumber):
                 tmpMul = self.priorityNumber
                 for j in xrange(i):
-                    tmpMul *= (self.priorityNumber - j - 1)
+                    tmpMul *= self.priorityNumber - j - 1
                     Pi[i] = tmpMul * (sum_p ** (i + 1)) * P0
 
-            for i in xrange(self.priorityNumber):
-                w[i] = self.taskNumber[i] - (1 - Pi[i]) / p[i]
+            w = [self.taskNumber[i] - (1 - Pi[i]) / p[i] for i in xrange(self.priorityNumber)]
+            
+            self.averageWaitingTime += [0.0] * (self.priorityNumber - len(self.averageWaitingTime))
+            self.fullAverageProcessingTime += [0.0] * (self.priorityNumber - len(self.fullAverageProcessingTime))
 
-            while len(self.averageWaitingTime) < self.priorityNumber:
-                self.averageWaitingTime.append(0.0);
-
-            while len(self.fullAverageProcessingTime) < self.priorityNumber:
-                self.fullAverageProcessingTime.append(0.0)
-
-            for i in xrange(self.priorityNumber):
-                self.fullAverageProcessingTime[i] = self.factAverageProcessingTime[i] * w[i] + \
-                                                    self.factAverageProcessingTime[i] * Pi[i]
-                self.averageWaitingTime[i] = self.fullAverageProcessingTime[i] - \
-                                             self.factAverageProcessingTime[i]
+            self.fullAverageProcessingTime = [self.factAverageProcessingTime[i] * w[i] + \
+                    self.factAverageProcessingTime[i] * Pi[i] \
+                    for i in xrange(self.priorityNumber)]
+            self.averageWaitingTime = [self.fullAverageProcessingTime[i] - \
+                    self.factAverageProcessingTime[i] \
+                    for i in xrange(self.priorityNumber)]
 
 def main():
     process = ProcessModel()
     process.addPriorityFromFile('data.txt')
     process.calculateTime()
-    print process.fullAverageProcessingTime
-    print process.averageWaitingTime
+    print 'Full average processing time:', process.fullAverageProcessingTime
+    print 'Average waiting time:', process.averageWaitingTime
 
 
 if __name__ == '__main__':
