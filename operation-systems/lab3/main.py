@@ -17,7 +17,7 @@ class ProcessModel:
 
         def addPriorityFromFile(self, fileName):
             for line in open(fileName).xreadlines():
-                self.addPriority(*map(int, line.split(' ')))
+                self.addPriority(*map(float, line.split(' ')))
 
         def calculateTime(self):
             sumTaskNumber = sum(self.taskNumber[i] for i in xrange(self.priorityNumber))
