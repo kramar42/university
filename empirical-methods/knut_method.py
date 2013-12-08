@@ -2,7 +2,7 @@
 
 import math
 
-class Digits:
+class digits:
         def __init__(self, value):
             self.digits = map(lambda c: ord(c) - ord('0'), list(str(value)))
 
@@ -12,11 +12,11 @@ class Digits:
         def nextMax(self):
             return self.digits.pop()
 
-class KnutMethod:
+class knut:
     def __init__(self, seed):
         self.x = seed
         self.seed = seed
-        self.digits = Digits(self.x)
+        self.digits = digits(self.x)
 
     def getSeed(self):
         return self.seed
@@ -45,10 +45,11 @@ class KnutMethod:
         self.x = (1001001001L * self.x) % 10000000000L
         self.case9()
     def case9(self):
-        currentDigits = Digits(self.x)
+        currentDigits = digits(self.x)
         for j in range(len(currentDigits.digits)):
             if 0 != currentDigits.digits[j]:
                 currentDigits.digits[j] -= 1
+        self.x = currentDigits.getValue()
         self.case10()
     def case10(self):
         if self.x < 100000L:
@@ -62,38 +63,20 @@ class KnutMethod:
         self.case12()
     def case12(self):
         self.x = int(math.floor((self.x * (self.x - 1) / 100000L))) % 10000000000L
-        self.digits = Digits(self.x)
+        self.digits = digits(self.x)
 
-    def getNext(self):
-        counter = self.digits.nextMax()
-        for i in range(counter+1):
-            case = self.digits.nextMax() + 3
-            if case == 3:
-                self.case3()
-            elif case == 4:
-                self.case4()
-            elif case == 5:
-                self.case5()
-            elif case == 6:
-                self.case6()
-            elif case == 7:
-                self.case7()
-            elif case == 8:
-                self.case8()
-            elif case == 9:
-                self.case9()
-            elif case == 10:
-                self.case10()
-            elif case == 11:
-                self.case11()
-            elif case == 12:
-                self.case12()
-        return int(math.fabs(self.x))
+    def iterator(self):
+        while True:
+            counter = self.digits.nextMax()
+            for i in xrange(counter+1):
+                case = self.digits.nextMax() + 3
+                getattr(self, 'case' + str(case))()
+            yield (int(math.fabs(self.x)))
 
 def main():
-    r = KnutMethod(42)
-    for i in range(10):
-        print r.getNext()
+    kn = knut(1283494).iterator()
+    for i, k in zip(range(10), kn):
+        print k
 
 if __name__ == '__main__':
     main()

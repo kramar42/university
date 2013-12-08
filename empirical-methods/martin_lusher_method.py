@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
-class Martin_LusherMethod:
+from marsalia_method import marsalia
+
+class martin_lusher:
     def __init__(self, marsalia, marsalia_N, lusher_N):
         self.marsalia_N = marsalia_N
         self.lusher_N = lusher_N
@@ -8,13 +10,14 @@ class Martin_LusherMethod:
         self.counter = 0
 
     def generateMarsaliaNumbers(self):
-        numbers = []
-        for i in xrange(self.marsalia_N):
-            numbers.append(marsalia.getNext())
+        self.numbers = [k for i,k in zip(range(self.marsalia_N), self.marsalia)]
         self.counter = self.lusher_N
 
-    def getNext(self):
-        if self.counter == 0
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.counter == 0:
             self.generateMarsaliaNumbers()
         nextNumber = self.numbers[0]
         del self.numbers[0]
@@ -22,9 +25,10 @@ class Martin_LusherMethod:
         return nextNumber
 
 def main():
-    r = Martin_LusherMethod(marsalia, 17, 10)
-    for i in range(10):
-        print r.getNext()
+    m = marsalia(315812035)
+    ml = martin_lusher(m, 17, 10)
+    for i,k in zip(range(10), ml):
+        print k
 
 if __name__ == '__main__':
     main()

@@ -11,7 +11,10 @@ class EichenauerMethod:
         self.m = m
         self.x = seed
 
-    def getNext(self):
+    def __iter__(self):
+        return self
+
+    def next(self):
         if self.x == 0:
             self.x = sys.maxint
         else:
@@ -43,8 +46,8 @@ def evklid(u, v, m):
 
 def main():
     r = EichenauerMethod(25454549, 24, 5757, 9090)
-    for i in range(10):
-        print r.getNext()
+    for i,k in zip(range(10), r):
+        print k
 
 if __name__ == '__main__':
     main()

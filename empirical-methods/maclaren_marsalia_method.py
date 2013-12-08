@@ -3,31 +3,28 @@
 from random import randint
 
 class MacLarena_MarsaliiMethod:
-    def __init__(self, k, m, r):
-        self.k = k
+    def __init__(self, m, r):
         self.m = m
         self.r = r
 
-    def getList(self):
+    def generator(self):
         numbers = []
         arrayX = self.createRInt()
 
-        for i in range(k):
+        while True:
             x = randint(0, self.m)
             y = randint(0, self.m)
-            j = r * y / self.m
-            numbers.append(arrayX[j])
+            j = self.r * y / self.m
+            yield arrayX[j]
             arrayX[j] = x
 
-        return numbers
-
     def createRInt(self):
-        return [randint(0, self.m) for _ in range(selr)]
+        return [randint(0, self.m) for _ in range(self.r)]
 
 def main():
-    r = MacLarena_MarsaliiMethod(10, 42, 100)
-    for i in r:
-        print i
+    r = MacLarena_MarsaliiMethod(10, 42).generator()
+    for i,k in zip(range(10), r):
+        print k
 
 if __name__ == '__main__':
     main()

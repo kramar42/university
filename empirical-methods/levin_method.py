@@ -4,18 +4,20 @@ import sys
 import random
 import math
 
-class LevinMethod:
+class levin:
     def __init__(self, seed, modulus):
         self.seed = seed
         self.currentX = seed
         self.modulus = modulus
         self.t = self.GenerateConstant()
 
+    def __iter__(self):
+        return self
+
     def getSeed(self):
         return self.seed
 
-    def getNext(self):
-        print 'New currentX:', self.currentX
+    def next(self):
         self.currentX = self.currentX ** 2 % self.modulus
         return self.currentX * ScalarMutiplexBinary(self.currentX, self.t) % 2
 
@@ -25,7 +27,6 @@ class LevinMethod:
         return randomSeed & operand
 
 def ScalarMutiplexBinary(operand1, operand2):
-    print operand1, operand2
     logicalAnd = operand1 & operand2
     scalarMultiplex = 0
     while logicalAnd != 0:
@@ -34,9 +35,9 @@ def ScalarMutiplexBinary(operand1, operand2):
     return scalarMultiplex
 
 def main():
-    r = LevinMethod(42, 17)
-    for i in range(10):
-        print r.getNext()
+    l = levin(12348101, 1249912)
+    for i, k in zip(range(10), l):
+        print k
 
 if __name__ == '__main__':
     main()
