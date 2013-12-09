@@ -12,6 +12,8 @@
 # b = a - 1 кратно каждому простому делителю m
 # и b должно быть кратоно 4, если m кратно 4
 
+from itertools import izip
+
 class linkong:
     def __init__(self, m, a, c, seed):
         self.m = m
@@ -38,9 +40,11 @@ class linkong:
 
 def main():
     l = linkong(2**63-1, 2**62+1, 2**61+1, 1238417890234)
-    seq = [k for i, k in zip(range(20), l)]
-    print 'Sequence:', str(seq)[1:-1]
-    print 'Potential:', l.potential()
+    seq = (k for _,k in izip(xrange(20), l))
+    print 'Sequence:',
+    for e in seq:
+        print e,
+    print '\nPotential:', l.potential()
 
 if __name__ == '__main__':
     main()
