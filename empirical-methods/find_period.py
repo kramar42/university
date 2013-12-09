@@ -1,39 +1,38 @@
 #! /usr/bin/env python
 
-from knut_method import knut
-import itertools
+from levin_method import levin
 
-class Period:
-    def __init__(self, accuracy):
-        self.accuracy = accuracy
+class period:
+    def __init__(self, generator):
+        self.generator = generator
 
-    def find(self, generator):
+    def find(self, accuracy):
         numbers = []
         while True:
-            firstMatch = next(generator)
+            firstMatch = next(self.generator)
             if firstMatch in numbers:
                 index = numbers.index(firstMatch)
                 numbers.append(firstMatch)
-                stopped = len(numbers) - 1
+                stopped = len(numbers)
                 flag = True
-                for i in xrange(self.accuracy):
-                    nextMatch = next(generator)
+                for i in xrange(1, accuracy):
+                    nextMatch = next(self.generator)
                     numbers.append(nextMatch)
                     if numbers[index + i] != nextMatch:
                         flag = False
                         break
                 if flag:
-                    return stopped - index
+                    return stopped - index - 1
             else:
                 numbers.append(firstMatch)
-            if len(numbers) >= 10000:
-                return 10000
+            if len(numbers) >= accuracy ** 2:
+                return None
 
 
 def main():
-    generator = itertools.cycle(range(12))
-    period = Period(1000)
-    print period.find(generator)
+    l = levin(12348101, 12049912)
+    p = period(l)
+    print p.find(1000)
 
 if __name__ == '__main__':
     main()

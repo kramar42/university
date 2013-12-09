@@ -2,7 +2,7 @@
 
 from itertools import izip
 
-class quadkong:
+class quadcong:
     def __init__(self, d, m, a, c, seed):
         self.d = d
         self.m = m
@@ -18,7 +18,7 @@ class quadkong:
         return self.x
 
 def main():
-    q = quadkong(2**62+1, 2**63-1, 2**62+1, 2**61+1, 1238417890234)
+    q = quadcong(2**62+1, 2**63-1, 2**62+1, 2**61+1, 1238417890234)
     for _,k in izip(xrange(20), q):
         print k
 

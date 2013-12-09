@@ -28,3 +28,6 @@ def max_digit(value):
 
 def second_max_digit(value):
     return sorted(to_digits(value))[-1]
+
+def take(method, count):
+    return (k for _,k in izip(xrange(count), method))

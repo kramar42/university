@@ -2,7 +2,7 @@
 
 from itertools import izip
 
-class JohnMochli:
+class mochli:
     def __init__(self, first, second, k, module):
         self.module = module
         self.first = first
@@ -23,7 +23,7 @@ class JohnMochli:
 
 
 def main():
-    j = JohnMochli(418902, 21490, 231480, 1249912).generator()
+    j = mochli(418902, 21490, 231480, 1249912).generator()
     for _,k in izip(xrange(10), j):
         print k
 

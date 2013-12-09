@@ -6,7 +6,7 @@ import math
 from levin_method import levin
 from marsalia_method import marsalia
 
-class MacLarena_MarsaliiMethod:
+class mclaren_marsalia:
         def __init__(self, method1, method2, r):
             self.r = r
             self.method1 = method1
@@ -41,7 +41,7 @@ def gcd(a, b):
 def main():
     l = levin(238490123, 12049912)
     m = marsalia(12839041)
-    r = MacLarena_MarsaliiMethod(l, m, 100)
+    r = mclaren_marsalia(l, m, 100)
     for _,k in izip(xrange(10), r):
         print k
 

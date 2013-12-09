@@ -14,7 +14,7 @@
 
 from itertools import izip
 
-class linkong:
+class lincong:
     def __init__(self, m, a, c, seed):
         self.m = m
         self.a = a
@@ -39,7 +39,7 @@ class linkong:
         return None
 
 def main():
-    l = linkong(2**63-1, 2**62+1, 2**61+1, 1238417890234)
+    l = lincong(2**63-1, 2**62+1, 2**61+1, 1238417890234)
     seq = (k for _,k in izip(xrange(20), l))
     print 'Sequence:',
     for e in seq:

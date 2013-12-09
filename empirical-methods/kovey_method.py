@@ -3,7 +3,7 @@
 import math
 from itertools import izip
 
-class KoveyMethod:
+class kovey:
     def __init__(self, seed):
         self.x = seed
         self.seed = seed
@@ -17,7 +17,7 @@ class KoveyMethod:
         return self.x
 
 def main():
-    r = KoveyMethod(32849102834)
+    k = kovey(32849102834)
     for _,k in izip(xrange(100), r):
         print k,
 

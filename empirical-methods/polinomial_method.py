@@ -4,7 +4,7 @@ import random
 import sys
 from itertools import izip
 
-class PolinomialMethod:
+class polinomial:
     def __init__(self, seed):
         self.seed = seed
         self.p = 5
@@ -27,7 +27,7 @@ class PolinomialMethod:
         return x
 
 def main():
-    p = PolinomialMethod(2134512908)
+    p = polinomial(2134512908)
     for _,k in izip(xrange(10), p):
         print k
 
