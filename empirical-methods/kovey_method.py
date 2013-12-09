@@ -13,13 +13,13 @@ class KoveyMethod:
         return self
 
     def next(self):
-        self.x = self.x * (self.x + 1) % int(2 ** self.l)
-        return int(math.fabs(self.x))
+        self.x = self.x * (self.x + 1) % 2 ** self.l
+        return self.x
 
 def main():
-    r = KoveyMethod(42)
-    for _,k in izip(xrange(10), r):
-        print k
+    r = KoveyMethod(32849102834)
+    for _,k in izip(xrange(100), r):
+        print k,
 
 if __name__ == '__main__':
     main()

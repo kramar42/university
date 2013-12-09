@@ -17,7 +17,7 @@ class levin:
 
     def next(self):
         self.currentX = self.currentX ** 2 % self.modulus
-        return self.currentX * (ScalarMutiplexBinary(self.currentX, self.t) % 2)
+        return (self.currentX * ScalarMutiplexBinary(self.currentX, self.t) % 2)
 
     def constant(self):
         seed = random.randint(0, sys.maxint)
@@ -29,8 +29,8 @@ def ScalarMutiplexBinary(first, second):
 
 def main():
     l = levin(12348101, 12049912)
-    for _,k in izip(xrange(10), l):
-        print k
+    for _,k in izip(xrange(50), l):
+        print k,
 
 if __name__ == '__main__':
     main()

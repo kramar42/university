@@ -27,7 +27,7 @@ class martin_lusher:
 
 def main():
     m = marsalia(315812035)
-    ml = martin_lusher(m, 17, 10)
+    ml = martin_lusher(m, 500, 55)
     for _,k in izip(xrange(10), ml):
         print k
 
