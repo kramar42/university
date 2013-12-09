@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 from marsalia_method import marsalia
+from itertools import izip
 
 class martin_lusher:
     def __init__(self, marsalia, marsalia_N, lusher_N):
@@ -27,7 +28,7 @@ class martin_lusher:
 def main():
     m = marsalia(315812035)
     ml = martin_lusher(m, 17, 10)
-    for i,k in zip(range(10), ml):
+    for _,k in izip(xrange(10), ml):
         print k
 
 if __name__ == '__main__':

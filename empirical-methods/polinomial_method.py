@@ -2,6 +2,7 @@
 
 import random
 import sys
+from itertools import izip
 
 class PolinomialMethod:
     def __init__(self, seed):
@@ -14,7 +15,10 @@ class PolinomialMethod:
         for i in range(self.k):
             self.buf.append(random.randint(0,sys.maxint))
 
-    def getNext(self):
+    def __iter__(self):
+        return self
+
+    def next(self):
         x = 0
         for j in range(self.k):
             x += self.a[j] * self.buf[self.k - j - 1] % self.p
@@ -23,9 +27,9 @@ class PolinomialMethod:
         return x
 
 def main():
-    r = PolinomialMethod(42)
-    for i in range(10):
-        print r.getNext()
+    p = PolinomialMethod(2134512908)
+    for _,k in izip(xrange(10), p):
+        print k
 
 if __name__ == '__main__':
     main()

@@ -14,7 +14,6 @@ def criteria(sequence, m):
     numinator = fact(m)*fact(n)
     denominator = fact(m-n+c)*(m**n)*fact(n-c)*fact(c)
 
-    print c, n, m
     return numinator / denominator
 
 def conflicts(sequence):
@@ -28,7 +27,7 @@ def main():
     m = Decimal(2**20)
 
     sequence = list()
-    for _ in range(n):
+    for _ in xrange(n):
         sequence.append(randint(0,m))
 
     print criteria(sequence, m)

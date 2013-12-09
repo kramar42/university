@@ -4,6 +4,7 @@
 import random
 import math
 from levin_method import levin
+from itertools import izip
 
 class darham:
     # int r;
@@ -59,7 +60,7 @@ def make_positive(x):
 def main():
     l = levin(12348101, 1249912)
     d = darham(l, 10)
-    for i, k in zip(range(10), d):
+    for _,k in izip(xrange(10), d):
         print k
 
 if __name__ == '__main__':

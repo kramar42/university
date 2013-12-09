@@ -26,7 +26,7 @@ class linkong:
         self.x = (self.a * self.x + self.c) % self.m
         return self.x
 
-    def potential(self, bound=1000):
+    def potential(self, bound=100):
         potent = 0
         accum = (self.a - 1)
         for i in xrange(bound):
@@ -37,9 +37,9 @@ class linkong:
         return None
 
 def main():
-    l = linkong(2**63, 2**62+1, 23489294120421, 42)
+    l = linkong(2**63-1, 2**62+1, 2**61+1, 1238417890234)
     seq = [k for i, k in zip(range(20), l)]
-    print 'Sequence:', seq
+    print 'Sequence:', str(seq)[1:-1]
     print 'Potential:', l.potential()
 
 if __name__ == '__main__':

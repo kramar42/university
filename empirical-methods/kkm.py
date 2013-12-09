@@ -22,3 +22,11 @@ def kkm(d, x0, a, c, m, n):
             period = j
 
     return A
+
+def main():
+    k = kkm(418902, 234810234, 21490, 231480, 1249912, 10)
+    for i in k:
+        print i
+
+if __name__ == '__main__':
+    main()

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import math
+from itertools import izip
 
 class digits:
         def __init__(self, value):
@@ -75,7 +76,7 @@ class knut:
 
 def main():
     kn = knut(1283494).iterator()
-    for i, k in zip(range(10), kn):
+    for _,k in izip(xrange(10), kn):
         print k
 
 if __name__ == '__main__':

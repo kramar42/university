@@ -2,6 +2,7 @@
 
 import sys
 import math
+from itertools import izip
 
 class EichenauerMethod:
     def __init__(self, a, c, m, seed):
@@ -46,7 +47,7 @@ def evklid(u, v, m):
 
 def main():
     r = EichenauerMethod(25454549, 24, 5757, 9090)
-    for i,k in zip(range(10), r):
+    for _,k in izip(xrange(10), r):
         print k
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from knut_method import Knut
+from knut_method import knut
 import itertools
 
 class Period:
@@ -31,10 +31,7 @@ class Period:
 
 
 def main():
-    knut = Knut(100).iterator()
     generator = itertools.cycle(range(12))
-    for i, k in zip(range(20), generator):
-        print k
     period = Period(1000)
     print period.find(generator)
 

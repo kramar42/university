@@ -1,3 +1,7 @@
+#! /usr/bin/env python
+
+from itertools import izip
+
 class JohnMochli:
     def __init__(self, first, second, k, module):
         self.module = module
@@ -20,7 +24,7 @@ class JohnMochli:
 
 def main():
     j = JohnMochli(418902, 21490, 231480, 1249912).generator()
-    for i, k in zip(range(10), j):
+    for _,k in izip(xrange(10), j):
         print k
 
 if __name__ == '__main__':

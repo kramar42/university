@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+from itertools import izip
+
 class marsalia:
     def __init__(self, seed):
         self.m = 2 ** 23
@@ -18,7 +20,7 @@ class marsalia:
 
 def main():
     m = marsalia(12839041)
-    for i,k in zip(range(10), m):
+    for _,k in izip(xrange(10), m):
         print k
 
 if __name__ == '__main__':
