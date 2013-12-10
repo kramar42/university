@@ -39,12 +39,12 @@ class lincong:
         return None
 
 def main():
-    l = lincong(2**63-1, 2**62+1, 2**61+1, 1238417890234)
+    l = lincong(2**63, 2**11+1, 2**27+1, 1238417890234)
     seq = (k for _,k in izip(xrange(20), l))
     print 'Sequence:',
     for e in seq:
         print e,
-    print '\nPotential:', l.potential()
+    print '\nPotential:', l.potential(100000)
 
 if __name__ == '__main__':
     main()

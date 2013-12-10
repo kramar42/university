@@ -18,7 +18,7 @@ class kovey:
 
 def main():
     k = kovey(32849102834)
-    for _,k in izip(xrange(100), r):
+    for _,k in izip(xrange(100), k):
         print k,
 
 if __name__ == '__main__':

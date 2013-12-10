@@ -9,7 +9,10 @@ class mochli:
         self.second = second
         self.k = k
 
-    def generator(self):
+    def __iter__(self):
+        return self.iterator()
+
+    def iterator(self):
         # returning first 2 elements from sequence
         yield (self.first)
         yield (self.second)
@@ -23,7 +26,7 @@ class mochli:
 
 
 def main():
-    j = mochli(418902, 21490, 231480, 1249912).generator()
+    j = mochli(418902, 21490, 231480, 1249912)
     for _,k in izip(xrange(10), j):
         print k
 

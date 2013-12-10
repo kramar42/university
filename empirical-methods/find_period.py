@@ -29,10 +29,22 @@ class period:
                 return None
 
 
+def exp(a, m):
+    l = 1
+    r = a
+    while r % m != 1:
+        r *= a
+        if r > m:
+            r = r % m
+        l += 1
+    return l
+
+
 def main():
     l = levin(12348101, 12049912)
     p = period(l)
     print p.find(1000)
+    print exp(177, 43)
 
 if __name__ == '__main__':
     main()

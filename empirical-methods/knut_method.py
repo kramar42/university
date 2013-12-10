@@ -18,9 +18,9 @@ class knut:
         self.x = seed
         self.seed = seed
         self.digits = digits(self.x)
-
-    def getSeed(self):
-        return self.seed
+    
+    def __iter__(self):
+        return self.iterator()
 
     def case3(self):
         if self.x < 5000000000L:
@@ -75,7 +75,7 @@ class knut:
             yield (int(math.fabs(self.x)))
 
 def main():
-    kn = knut(1283494).iterator()
+    kn = knut(1283494)
     for _,k in izip(xrange(10), kn):
         print k
 
