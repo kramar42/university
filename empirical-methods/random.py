@@ -7,7 +7,7 @@ import math
 task = {
         'variant': 11,
         'tasks_variants': [2, 1, 0],
-        'tasks': ['eichenauer', '!knut', '!kovey', 'levin', 'lincong',
+        'tasks': ['eichenauer', '!knut', '!kovey', 'levin', 'lehmer',
                   'martin_lusher', 'mclaren_marsalia', 'polinomial']
        }
 
@@ -175,10 +175,34 @@ class mochli:
 
         return x
 
+class lehmer:
+    def __init__(self, a, c, m, seed):
+        self.a = a
+        self.c = c
+        self.m = m
+        self.x = seed
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        self.x = (self.a * self.x + self.c) % self.m
+        return self.x
+
+    def potential(self, bound=100):
+        potential = 0
+        accum = (self.a - 1)
+        for i in xrange(bound):
+            if accum % self.m == 0:
+                return potential
+            accum *= (self.a - 1)
+            potential += 1
+        # potential if out of bounds
+        return None
+
 
 def main():
     #dh = darham(le, 10)
-    #lc = lincong(2**63-1, 2**62+1, 2**61+1, 1238417890234)
     #le = levin(12348101, 1249912)
     #ma = marsalia(12839041)
     #ml = martin_lusher(ma, 500, 55)
@@ -187,13 +211,15 @@ def main():
     #qc = quadcong(2**62+1, 2**63-1, 2**62+1, 2**61+1, 1238417890234)
     #ra = random(23481920, 294)
     ei = eichenauer(104711, 104723, 104717, 104729)
+    fn = von_neumann(47382384910295619L)
     kn = knut(3848239084290384901283494L)
     kv = kovey(3284910283328490128448L)
-    fn = von_neumann(47382384910295619L)
+    lm = lehmer(41+1, 43, 41**10, 42**10)
     mo = mochli(43894218902L, 5)
 
-    for _,k in izip(xrange(10), fn):
+    for _,k in izip(xrange(10), lm):
         print k
+    print lm.potential()
 
 
 if __name__ == '__main__':
