@@ -8,7 +8,7 @@ task = {
         'variant': 11,
         'tasks_variants': [2, 1, 0],
         'tasks': ['!eichenauer', '!knut', '!coveyou', 'levin', '!lehmer',
-                  'martin_lusher', 'mclaren_marsalia', '!polinomial']
+                  '!lusher', '!maclaren_marsaglia', '!polinomial']
        }
 
 
@@ -201,7 +201,7 @@ class lehmer:
         # potential if out of bounds
         return None
 
-class marsalia:
+class marsaglia:
     def __init__(self, seed):
         self.m = 2 ** 32
         self.seed = seed
@@ -273,7 +273,7 @@ class levin:
         return (self.currentX * scalarmultiply(self.currentX, self.t) % 2)
 
 
-class mclaren_marsalia:
+class maclaren_marsaglia:
     def __init__(self, method1, method2, r):
         self.r = r
         self.xi = [int(fabs(x)) for _,x in izip(xrange(r), method1)]
@@ -297,10 +297,34 @@ class mclaren_marsalia:
         self.a[j] = self.currentXi
         return next
 
+class lusher:
+    def __init__(self, marsaglia, marsaglia_N, lusher_N):
+        self.marsaglia_N = marsaglia_N
+        self.lusher_N = lusher_N
+        self.marsaglia = marsaglia
+        self.counter = 0
+
+    def generate(self):
+        self.numbers = [k for _,k in izip(xrange(self.marsaglia_N), self.marsaglia)]
+        self.counter = self.lusher_N
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        # generate next pack of numbers
+        if self.counter == 0:
+            self.generate()
+
+        # pop first number
+        next = self.numbers[0]
+        del self.numbers[0]
+        self.counter -= 1
+        return next
+
 
 def main():
     #dh = darham(le, 10)
-    #ml = martin_lusher(ma, 500, 55)
     #ra = random(23481920, 294)
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
@@ -308,15 +332,15 @@ def main():
     kv = coveyou(3284910283328490128448L)
     le = levin(12348101, 1249912)
     lm = lehmer(41+1, 43, 41**10, 42**10)
-    ma = marsalia(128390238901238141L)
-    mm = mclaren_marsalia(le, ma, 100)
+    ma = marsaglia(128390238901238141L)
+    lu = lusher(ma, 500, 55)
+    mm = maclaren_marsaglia(le, ma, 100)
     mo = mauchly(43894218902L, 5)
     pl = polinomial(2134512908)
     qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
 
     for _,k in izip(xrange(10), mm):
         print k
-    print mm.period()
 
 
 if __name__ == '__main__':
