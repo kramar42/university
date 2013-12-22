@@ -160,7 +160,7 @@ class von_neumann():
         self.x = int(middle(self.x ** 2))
         return self.x
 
-class mochli:
+class mauchly:
     def __init__(self, x, k):
         self.a = [x] + [i for i,_ in izip(von_neumann(x), xrange(k-1))]
         self.k = k
@@ -310,7 +310,7 @@ def main():
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsalia(128390238901238141L)
     mm = mclaren_marsalia(le, ma, 100)
-    mo = mochli(43894218902L, 5)
+    mo = mauchly(43894218902L, 5)
     pl = polinomial(2134512908)
     qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
 
