@@ -7,7 +7,7 @@ import math
 task = {
         'variant': 11,
         'tasks_variants': [2, 1, 0],
-        'tasks': ['eichenauer', '!knut', '!kovey', 'levin', 'lehmer',
+        'tasks': ['!eichenauer', '!knut', '!kovey', 'levin', '!lehmer',
                   'martin_lusher', 'mclaren_marsalia', 'polinomial']
        }
 
