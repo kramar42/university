@@ -56,6 +56,8 @@ def middle(*args):
     s = s[shift: -(diff - shift)]
     return s
 
+def scalarmultiply(first, second):
+    return len(filter(lambda c: c=='1', bin(first & second)))
 
 class knut:
     def __init__(self, seed):
@@ -252,56 +254,48 @@ class polinomial:
         return x
 
 class levin:
-    def __init__(self, seed, modulus):
+    def __init__(self, seed, m):
         self.seed = seed
         self.currentX = seed
-        self.modulus = modulus
-        self.t = self.constant()
+        self.m = m
+
+        ei = eichenauer(104711, 104723, 104717, 104729)
+        seed = ei.next()
+        operand = (1 << int(log(m) / log(2) + 1)) - 1
+
+        self.t = seed & operand
 
     def __iter__(self):
         return self
 
     def next(self):
-        self.currentX = self.currentX ** 2 % self.modulus
-        return (self.currentX * self.ScalarMutiplexBinary(self.currentX, self.t) % 2)
+        self.currentX = self.currentX ** 2 % self.m
+        return (self.currentX * scalarmultiply(self.currentX, self.t) % 2)
 
-    def constant(self):
-        ei = eichenauer(104711, 104723, 104717, 104729)
-        seed = ei.next()
-        operand = (1 << int(log(self.modulus) / log(2) + 1)) - 1
-        return seed & operand
-
-    def ScalarMutiplexBinary(self, first, second):
-        return len(filter(lambda c: c=='1', bin(first & second)))
 
 class mclaren_marsalia:
     def __init__(self, method1, method2, r):
         self.r = r
-        self.method1 = method1
-        self.method2 = method2
         self.xi = [int(fabs(x)) for _,x in izip(xrange(r), method1)]
         self.yi = [int(fabs(y)) for _,y in izip(xrange(r), method2)]
-        self.A = self.xi[:]
+        self.a = self.xi[:]
         self.my = max(self.yi)
         self.ei = eichenauer(104711, 104723, 104717, 104729)
 
-    def updateCurrentXiYi(self):
-        self.currentXi = self.xi[self.ei.next() % r]
-        self.currentYi = self.yi[self.ei.next() % r]
+    def update(self):
+        self.currentXi = self.xi[self.ei.next() % self.r]
+        self.currentYi = self.yi[self.ei.next() % self.r]
 
     def __iter__(self):
         return self
 
     def next(self):
-        self.updateCurrentXiYi()
+        self.update()
+        # next index
         j = int(fabs((self.r-1) * self.currentYi / self.my))
-        nextNumber = self.A[j]
-        self.A[j] = self.currentXi;
-        return nextNumber
-
-    def period (a, b):
-        return a / euclid(a, b)[0] * b
-
+        next = self.a[j]
+        self.a[j] = self.currentXi
+        return next
 
 
 def main():
@@ -322,6 +316,7 @@ def main():
 
     for _,k in izip(xrange(10), mm):
         print k
+    print mm.period()
 
 
 if __name__ == '__main__':
