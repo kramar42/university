@@ -4,13 +4,7 @@ from itertools import izip
 from math import floor, log, fabs
 
 
-task = {
-        'variant': 11,
-        'tasks_variants': [2, 1, 0],
-        'tasks': ['!eichenauer', '!knut', '!coveyou', 'levin', '!lehmer',
-                  '!lusher', '!maclaren_marsaglia', '!polinomial']
-       }
-
+# usefull functions
 
 class digits:
     '''Stores integer as list of digits'''
@@ -26,7 +20,6 @@ class digits:
     def next(self):
         return self.digits.pop()
 
-
 def euclid(a, b):
     '''Returns GCD of a and b'''
     if b == 0: return (1, 0, a)
@@ -39,7 +32,6 @@ def euclid(a, b):
         x1, x2 = x, x1
         a, b = b, r
     return (x2, y2, a)
-
 
 def inversed(a, m):
     '''Returns x, such that a * x mod m = 1'''
@@ -58,6 +50,12 @@ def middle(*args):
 
 def scalarmultiply(first, second):
     return len(filter(lambda c: c=='1', bin(first & second)))
+
+def make_positive(x):
+    return map(lambda n: int(fabs(n)), x)
+
+
+# starting methods
 
 class knut:
     def __init__(self, seed):
@@ -148,6 +146,7 @@ class eichenauer:
             self.x = (self.a * inversed(self.x, self.m) + self.c) % self.m
         return self.x
 
+
 class von_neumann():
     def __init__(self, x):
         self.x = x
@@ -159,6 +158,7 @@ class von_neumann():
     def next(self):
         self.x = int(middle(self.x ** 2))
         return self.x
+
 
 class mauchly:
     def __init__(self, x, k):
@@ -175,6 +175,7 @@ class mauchly:
         del self.a[0]
 
         return x
+
 
 class lehmer:
     def __init__(self, a, c, m, seed):
@@ -201,6 +202,7 @@ class lehmer:
         # potential if out of bounds
         return None
 
+
 class marsaglia:
     def __init__(self, seed):
         self.m = 2 ** 32
@@ -216,6 +218,7 @@ class marsaglia:
         self.buf.append(x)
         return x
 
+
 class quadratic_congruence:
     def __init__(self, d, a, c, m, seed):
         self.d = d
@@ -230,6 +233,7 @@ class quadratic_congruence:
     def next(self):
         self.x = (self.d * self.x ** 2 + self.a * self.x + self.c) % self.m
         return self.x
+
 
 class polinomial:
     def __init__(self, seed):
@@ -252,6 +256,7 @@ class polinomial:
         del self.buf[0]
         self.buf.append(x)
         return x
+
 
 class levin:
     def __init__(self, seed, m):
@@ -297,6 +302,7 @@ class maclaren_marsaglia:
         self.a[j] = self.currentXi
         return next
 
+
 class lusher:
     def __init__(self, marsaglia, marsaglia_N, lusher_N):
         self.marsaglia_N = marsaglia_N
@@ -323,14 +329,42 @@ class lusher:
         return next
 
 
+class darhamam:
+    def __init__(self, method, r):
+        self.r = r
+        self.method = method
+        self.generate_xi()
+        self.xi = make_positive(self.xi)
+        self.mx = max(self.xi)
+
+    def __iter__(self):
+        return self
+
+    def generate_xi(self):
+        self.xi = [x for _,x in izip(xrange(self.r), self.method)]
+        self.a = self.xi[:]
+
+    def update_xi(self):
+        self.current_xi = self.xi[self.method.next() % self.r]
+
+    def next(self):
+        self.update_xi()
+        # next index
+        j = int(fabs((self.r-1) * self.current_xi / self.mx))
+        next = self.a[j]
+        self.a[j] = self.current_xi
+        return next
+
+
+
 def main():
-    #dh = darham(le, 10)
     #ra = random(23481920, 294)
+    le = levin(12348101, 1249912)
+    dh = darhamam(le, 10)
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
     kn = knut(3848239084290384901283494L)
     kv = coveyou(3284910283328490128448L)
-    le = levin(12348101, 1249912)
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsaglia(128390238901238141L)
     lu = lusher(ma, 500, 55)
@@ -339,7 +373,7 @@ def main():
     pl = polinomial(2134512908)
     qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
 
-    for _,k in izip(xrange(10), mm):
+    for _,k in izip(xrange(10), dh):
         print k
 
 
