@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 from itertools import izip
-from math import floor
+from math import floor, log, fabs
 
 
 task = {
@@ -55,7 +55,6 @@ def middle(*args):
 
     s = s[shift: -(diff - shift)]
     return s
-
 
 
 class knut:
@@ -252,24 +251,76 @@ class polinomial:
         self.buf.append(x)
         return x
 
+class levin:
+    def __init__(self, seed, modulus):
+        self.seed = seed
+        self.currentX = seed
+        self.modulus = modulus
+        self.t = self.constant()
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        self.currentX = self.currentX ** 2 % self.modulus
+        return (self.currentX * self.ScalarMutiplexBinary(self.currentX, self.t) % 2)
+
+    def constant(self):
+        ei = eichenauer(104711, 104723, 104717, 104729)
+        seed = ei.next()
+        operand = (1 << int(log(self.modulus) / log(2) + 1)) - 1
+        return seed & operand
+
+    def ScalarMutiplexBinary(self, first, second):
+        return len(filter(lambda c: c=='1', bin(first & second)))
+
+class mclaren_marsalia:
+    def __init__(self, method1, method2, r):
+        self.r = r
+        self.method1 = method1
+        self.method2 = method2
+        self.xi = [int(fabs(x)) for _,x in izip(xrange(r), method1)]
+        self.yi = [int(fabs(y)) for _,y in izip(xrange(r), method2)]
+        self.A = self.xi[:]
+        self.my = max(self.yi)
+        self.ei = eichenauer(104711, 104723, 104717, 104729)
+
+    def updateCurrentXiYi(self):
+        self.currentXi = self.xi[self.ei.next() % r]
+        self.currentYi = self.yi[self.ei.next() % r]
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        self.updateCurrentXiYi()
+        j = int(fabs((self.r-1) * self.currentYi / self.my))
+        nextNumber = self.A[j]
+        self.A[j] = self.currentXi;
+        return nextNumber
+
+    def period (a, b):
+        return a / euclid(a, b)[0] * b
+
+
 
 def main():
     #dh = darham(le, 10)
-    #le = levin(12348101, 1249912)
     #ml = martin_lusher(ma, 500, 55)
-    #mm = mclaren_marsalia(le, ma, 100)
     #ra = random(23481920, 294)
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
     kn = knut(3848239084290384901283494L)
     kv = kovey(3284910283328490128448L)
+    le = levin(12348101, 1249912)
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsalia(128390238901238141L)
+    mm = mclaren_marsalia(le, ma, 100)
     mo = mochli(43894218902L, 5)
     pl = polinomial(2134512908)
     qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
 
-    for _,k in izip(xrange(10), pl):
+    for _,k in izip(xrange(10), mm):
         print k
 
 
