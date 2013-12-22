@@ -356,15 +356,30 @@ class darhamam:
         return next
 
 
+class random:
+    def __init__(self, seed, g):
+        self.l = levin(seed * 892412, 28 * seed);
+        self.k = knut(seed % 42210)
+        self.seed = seed
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        self.seed += self.k.next()
+        self.seed -= self.l.next()
+        self.x = self.seed
+        return self.x
+
+
 
 def main():
-    #ra = random(23481920, 294)
-    le = levin(12348101, 1249912)
-    dh = darhamam(le, 10)
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
     kn = knut(3848239084290384901283494L)
     kv = coveyou(3284910283328490128448L)
+    le = levin(12348101, 1249912)
+    dh = darhamam(le, 10)
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsaglia(128390238901238141L)
     lu = lusher(ma, 500, 55)
@@ -372,8 +387,9 @@ def main():
     mo = mauchly(43894218902L, 5)
     pl = polinomial(2134512908)
     qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
+    ra = random(23481920, 294)
 
-    for _,k in izip(xrange(10), dh):
+    for _,k in izip(xrange(10), ra):
         print k
 
 
