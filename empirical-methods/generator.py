@@ -7,7 +7,7 @@ from math import floor, log, fabs
 task = {
         'variant': 11,
         'tasks_variants': [2, 1, 0],
-        'tasks': ['!eichenauer', '!knut', '!kovey', 'levin', '!lehmer',
+        'tasks': ['!eichenauer', '!knut', '!coveyou', 'levin', '!lehmer',
                   'martin_lusher', 'mclaren_marsalia', '!polinomial']
        }
 
@@ -116,7 +116,7 @@ class knut:
         return self.x
 
 
-class kovey:
+class coveyou:
     def __init__(self, seed, l=64):
         self.x = seed
         self.seed = seed
@@ -305,7 +305,7 @@ def main():
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
     kn = knut(3848239084290384901283494L)
-    kv = kovey(3284910283328490128448L)
+    kv = coveyou(3284910283328490128448L)
     le = levin(12348101, 1249912)
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsalia(128390238901238141L)
