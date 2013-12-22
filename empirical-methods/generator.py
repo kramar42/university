@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 
 from itertools import izip
-import math
+from math import floor
 
 
 task = {
         'variant': 11,
         'tasks_variants': [2, 1, 0],
         'tasks': ['!eichenauer', '!knut', '!kovey', 'levin', '!lehmer',
-                  'martin_lusher', 'mclaren_marsalia', 'polinomial']
+                  'martin_lusher', 'mclaren_marsalia', '!polinomial']
        }
 
 
@@ -71,7 +71,7 @@ class knut:
             self.x += 5000000000L
         self.case1()
     def case1(self):
-        self.x = int(math.floor((self.x * self.x) / 100000L)) % 10000000000L
+        self.x = int(floor((self.x * self.x) / 100000L)) % 10000000000L
         self.case2()
     def case2(self):
         self.x = 1001001001L * self.x % 10000000000L
@@ -107,7 +107,7 @@ class knut:
             self.x *= 10
         self.case9()
     def case9(self):
-        self.x = int(math.floor((self.x * (self.x - 1) / 100000L))) % 10000000000L
+        self.x = int(floor((self.x * (self.x - 1) / 100000L))) % 10000000000L
 
     def next(self):
         for i in xrange(digits(self.x)[0]):
@@ -230,13 +230,34 @@ class quadratic_congruence:
         self.x = (self.d * self.x ** 2 + self.a * self.x + self.c) % self.m
         return self.x
 
+class polinomial:
+    def __init__(self, seed):
+        self.seed = seed
+        self.p = 5
+        self.k = 4
+        self.a = [2,3,0,1]
+
+        self.buf = []
+        ei = eichenauer(104711, 104723, 104717, 104729)
+        self.buf = [k for k,_ in izip(ei, xrange(self.k))]
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        x = 0
+        for j in range(self.k):
+            x += self.a[j] * self.buf[self.k - j - 1] % self.p
+        del self.buf[0]
+        self.buf.append(x)
+        return x
+
 
 def main():
     #dh = darham(le, 10)
     #le = levin(12348101, 1249912)
     #ml = martin_lusher(ma, 500, 55)
     #mm = mclaren_marsalia(le, ma, 100)
-    #pl = polinomial(2134512908)
     #ra = random(23481920, 294)
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
@@ -245,9 +266,10 @@ def main():
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsalia(128390238901238141L)
     mo = mochli(43894218902L, 5)
+    pl = polinomial(2134512908)
     qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
 
-    for _,k in izip(xrange(10), qc):
+    for _,k in izip(xrange(10), pl):
         print k
 
 
