@@ -48,6 +48,14 @@ def inversed(a, m):
         return x
     return 0
 
+def middle(*args):
+    s = ''.join(map(str, args))
+    diff = len(s) / 2
+    shift = diff / 2
+
+    s = s[shift: -(diff - shift)]
+    return s
+
 
 
 class knut:
@@ -148,13 +156,25 @@ class von_neumann():
         return self
 
     def next(self):
-        s = str(self.x ** 2)
-        diff = len(s) - self.size
-        shift = diff / 2
-
-        s = s[shift: -(diff - shift)]
-        self.x = int(s)
+        self.x = int(middle(self.x ** 2))
         return self.x
+
+class mochli:
+    def __init__(self, x, k):
+        self.a = [x] + [i for i,_ in izip(von_neumann(x), xrange(k-1))]
+        self.k = k
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        x = self.a[0]
+        # middle of concat first & last elements in list
+        self.a.append(int(middle(self.a[0], self.a[-1])))
+        del self.a[0]
+
+        return x
+
 
 def main():
     #dh = darham(le, 10)
@@ -163,7 +183,6 @@ def main():
     #ma = marsalia(12839041)
     #ml = martin_lusher(ma, 500, 55)
     #mm = mclaren_marsalia(le, ma, 100)
-    #mo = mochli(418902, 21490, 231480, 1249912)
     #pl = polinomial(2134512908)
     #qc = quadcong(2**62+1, 2**63-1, 2**62+1, 2**61+1, 1238417890234)
     #ra = random(23481920, 294)
@@ -171,6 +190,7 @@ def main():
     kn = knut(3848239084290384901283494L)
     kv = kovey(3284910283328490128448L)
     fn = von_neumann(47382384910295619L)
+    mo = mochli(43894218902L, 5)
 
     for _,k in izip(xrange(10), fn):
         print k
