@@ -215,6 +215,21 @@ class marsalia:
         self.buf.append(x)
         return x
 
+class quadratic_congruence:
+    def __init__(self, d, a, c, m, seed):
+        self.d = d
+        self.a = a
+        self.c = c
+        self.m = m
+        self.x = seed
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        self.x = (self.d * self.x ** 2 + self.a * self.x + self.c) % self.m
+        return self.x
+
 
 def main():
     #dh = darham(le, 10)
@@ -222,7 +237,6 @@ def main():
     #ml = martin_lusher(ma, 500, 55)
     #mm = mclaren_marsalia(le, ma, 100)
     #pl = polinomial(2134512908)
-    #qc = quadcong(2**62+1, 2**63-1, 2**62+1, 2**61+1, 1238417890234)
     #ra = random(23481920, 294)
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
@@ -231,8 +245,9 @@ def main():
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsalia(128390238901238141L)
     mo = mochli(43894218902L, 5)
+    qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
 
-    for _,k in izip(xrange(10), ma):
+    for _,k in izip(xrange(10), qc):
         print k
 
 
