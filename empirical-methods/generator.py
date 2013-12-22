@@ -200,11 +200,25 @@ class lehmer:
         # potential if out of bounds
         return None
 
+class marsalia:
+    def __init__(self, seed):
+        self.m = 2 ** 32
+        self.seed = seed
+        self.buf = [seed + i for i in xrange(55)]
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        x = (self.buf[55 - 24] * self.buf[55 - 55]) % self.m
+        del self.buf[0]
+        self.buf.append(x)
+        return x
+
 
 def main():
     #dh = darham(le, 10)
     #le = levin(12348101, 1249912)
-    #ma = marsalia(12839041)
     #ml = martin_lusher(ma, 500, 55)
     #mm = mclaren_marsalia(le, ma, 100)
     #pl = polinomial(2134512908)
@@ -215,11 +229,11 @@ def main():
     kn = knut(3848239084290384901283494L)
     kv = kovey(3284910283328490128448L)
     lm = lehmer(41+1, 43, 41**10, 42**10)
+    ma = marsalia(128390238901238141L)
     mo = mochli(43894218902L, 5)
 
-    for _,k in izip(xrange(10), lm):
+    for _,k in izip(xrange(10), ma):
         print k
-    print lm.potential()
 
 
 if __name__ == '__main__':
