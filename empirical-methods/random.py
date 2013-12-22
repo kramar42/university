@@ -139,10 +139,25 @@ class eichenauer:
             self.x = (self.a * inversed(self.x, self.m) + self.c) % self.m
         return self.x
 
+class von_neumann():
+    def __init__(self, x):
+        self.x = x
+        self.size = len(str(x))
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        s = str(self.x ** 2)
+        diff = len(s) - self.size
+        shift = diff / 2
+
+        s = s[shift: -(diff - shift)]
+        self.x = int(s)
+        return self.x
 
 def main():
     #dh = darham(le, 10)
-    #fn = fon_neiman(4738295619)
     #lc = lincong(2**63-1, 2**62+1, 2**61+1, 1238417890234)
     #le = levin(12348101, 1249912)
     #ma = marsalia(12839041)
@@ -155,8 +170,9 @@ def main():
     ei = eichenauer(104711, 104723, 104717, 104729)
     kn = knut(3848239084290384901283494L)
     kv = kovey(3284910283328490128448L)
+    fn = von_neumann(47382384910295619L)
 
-    for _,k in izip(xrange(10), kn):
+    for _,k in izip(xrange(10), fn):
         print k
 
 
