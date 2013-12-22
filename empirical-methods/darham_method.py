@@ -7,21 +7,6 @@ from levin_method import levin
 from itertools import izip
 
 class darham:
-    # int r;
-    # кол-во чисел, которые надо сгенерить
-    # long[] A;
-    # массив чисел, сгенерированных другим методом
-    # List<long> xi;
-    # начальная последовательность
-    # long mx;
-    # макс значение посл Хi
-    # int j;
-    # индекс след случ числа
-    # IGenerator method;
-    # метод для генерации начальной посл Хі (метод должен генерить числа >0)
-    # Random rnd;
-    # для генерации след индекса, по какому будет взято текущий Хі
-
     def __init__(self, method, r):
         self.r = r
         self.method = method
