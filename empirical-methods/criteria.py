@@ -4,72 +4,74 @@ from random import randint
 from math import sqrt, pi, e
 from decimal import Decimal
 from sequence import to_digits
+from itertools import izip
 
 tau = Decimal(2*pi)
 e = Decimal(e)
 
+
+def fact(n):
+    return Decimal(sqrt(tau*n))*(n/e)**n
+
+
 def conflicts_criteria(sequence, m):
     n = len(sequence)
-    c = conflicts(sequence)
+    c = len(sequence) - len(set(sequence))
 
     numinator = fact(m)*fact(n)
     denominator = fact(m-n+c)*(m**n)*fact(n-c)*fact(c)
 
     return numinator / denominator
 
-def conflicts(sequence):
-    return len(sequence) - len(set(sequence))
 
-def fact(n):
-    return Decimal(sqrt(tau*n))*(n/e)**n
-
-
-def polynom(random):
+def polynom_criteria(random, m=0):
     p = 7
     k = 4
     n = 50
     A = [1, 3, 1, 5]
-    X = [k for i,k in zip(range(n), random)]
+    X = [k for i,k in izip(xrange(n), random)]
     for i in xrange(k-1, n):
         for j in xrange(1, k):
             X[i] += A[j] * X[i-j] % p
     return p ** k - 1
 
-def doMPos(A, s_lenghts):
-    i = 1
-    k = 0
-    i0 = -1
-    while i != n - 1:
-        if A[i - 1] > A[i]:
-            if i == n - 2:
-                s_lenghts.append(k)
-                k = 1;
-                s_lenghts.append(k)
-                break
-            k = i - i0 - 1
-            i0 = i
-            i = i + 2
-            s_lenghts.append(k)
 
-            if i == n - 1:
-                if A[i - 1] > A[i]:
-                    k = 1
-                else:
-                    k = 2
+def monotonicity_criteria(random, m=0):
+    def doMPos(A):
+        s_length = len(A)
+        i = 1
+        k = 0
+        i0 = -1
+        while i != n - 1:
+            if A[i - 1] > A[i]:
+                if i == n - 2:
+                    s_lenghts.append(k)
+                    k = 1;
+                    s_lenghts.append(k)
+                    break
+                k = i - i0 - 1
+                i0 = i
+                i = i + 2
                 s_lenghts.append(k)
-                break
 
-            if i == n:
-                break
-        else:
-            i += 1
-    return s_lenghts
+                if i == n - 1:
+                    if A[i - 1] > A[i]:
+                        k = 1
+                    else:
+                        k = 2
+                    s_lenghts.append(k)
+                    break
 
-def monotonicity_criteria(random):
+                if i == n:
+                    break
+            else:
+                i += 1
+        return s_lenghts
+
     n = 880
     m = 8
     s_lenghts = []
-    A = [k for i,k in zip(range(n), random)]
+    A = [k for i,k in izip(xrange(n), random)]
     L = to_digits(doMPos(A))
     s_number = [0] * n
     PirsonS = 0
@@ -84,12 +86,13 @@ def monotonicity_criteria(random):
 
     for i in range(len(L)):
         pp[i] = s_number[i] / len(L)
-        pr[i] = 1 / factorial(L[i]) - 1 / factorial(L[i] + 1)
+        pr[i] = 1 / fact(L[i]) - 1 / fact(L[i] + 1)
         if L[i] >= t:
-            pr[i] = 1 / factorial(s_number[i])
+            pr[i] = 1 / fact(s_number[i])
         PirsonS = +((pp[i] - pr[i]) ** 2) / pr[i]
 
     return PirsonS * n
+
 
 def permutations_criteria(sequence, t):
     r = t - 1
@@ -113,64 +116,6 @@ def permutations_criteria(sequence, t):
         r = r - 1
     return f
 
-def setT(self, t):
-    while not self.groupsIsTrue(t):
-        t = t - 1
-    return t
-
-def groupsIsTrue(self, t):
-    n = len(self.randomNumbers) / t
-    for j in range(n):
-        for i in range(t - 1):
-            for k in range(i + 1, t):
-                if self.randomNumbers[j * t + i] == self.randomNumbers[j * t + k]:
-                    return False
-    if (len(self.randomNumbers) % t) != 0:
-        return False
-    return True
-
-def experimentalProbability(self, i):
-    return float(self.permutationsFrequencies[i]) / self.n
-
-def setPermutationsFrequencies(self):
-    self.permutationsFrequencies = [0] * self.permutationsNumber
-
-    for j in range(self.n):
-        f = self.findNumbPermutation(j)
-        self.t = self.permutationsFrequencies[f]
-        self.permutationsFrequencies[f] = self.t + 1
-    return self.permutationsFrequencies
-
-def findNumbPermutation(self, j):
-    t = self.t
-    r = t
-    f = 0
-
-    while r > 0:
-        s = self.maxNumberIndex(j, r)
-        s1 = s - j * t + 1
-        f = r * f + s1 - 1
-        tmp = self.randomNumbers[j * self.t + r]
-        self.randomNumbers[j * t + r] = self.randomNumbers[j * t + s]
-        self.randomNumbers[j * t + s] = tmp
-
-        r = r - 1
-
-    return f
-
-def maxNumberIndex(self, j, r):
-    s = 0
-    maxNumber = self.randomNumbers[j * self.t]
-
-    for i in range(1, r):
-        if self.randomNumbers[j * self.t + i] > maxNumber:
-            maxNumber = self.randomNumbers[j * self.t + i]
-            s = i
-
-    return s
-
-def factorial(n):
-    return sqrt(tau*n)*(n/e)**n
 
 def main():
     n = 2**14
@@ -180,7 +125,7 @@ def main():
     for _ in xrange(n):
         sequence.append(randint(0,m))
 
-    print conflicts_criteria(sequence, len(sequence))
+    print permutations_criteria(sequence, len(sequence))
 
 if __name__ == '__main__':
     main()
