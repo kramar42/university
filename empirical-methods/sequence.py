@@ -60,12 +60,8 @@ class period:
 
 def main():
     from generator import knut
-    from itertools import repeat
 
-    first = [1,2,3] * 5
-    second = knut(1283494)
-
-    p = period(join_sequence(first, second))
+    p = period(knut(1283494))
     print p.find()
 
 if __name__ == '__main__':
