@@ -374,12 +374,15 @@ class random:
 
 
 def main():
+    from sequence import period
+
+
+    cv = coveyou(3284910283328490128448L)
     ei = eichenauer(104711, 104723, 104717, 104729)
     fn = von_neumann(47382384910295619L)
     kn = knut(3848239084290384901283494L)
-    kv = coveyou(3284910283328490128448L)
     le = levin(12348101, 1249912)
-    dh = darhamam(le, 10)
+    dh = darhamam(le, 42)
     lm = lehmer(41+1, 43, 41**10, 42**10)
     ma = marsaglia(128390238901238141L)
     lu = lusher(ma, 500, 55)
@@ -389,8 +392,10 @@ def main():
     qc = quadratic_congruence(348348820L, 3849023L, 38490234L, 2**64, 42)
     ra = random(23481920, 294)
 
-    for _,k in izip(xrange(10), ra):
+    rand = dh
+    for _,k in izip(xrange(100), rand):
         print k
+    print period(rand).find(1000)
 
 
 if __name__ == '__main__':
